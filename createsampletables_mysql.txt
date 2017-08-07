@@ -1,0 +1,21 @@
+drop database if exists javabook;
+create database javabook;
+/*grant all privileges on *.* to 'scott'@'localhost' identified by 'tiger';*/
+use javabook;
+/*constraint pkCollege primary key (collegeId), constraint fkDeanId foreign key (deanId) references Faculty(ssn)*/
+
+drop table if exists GamblerRegisteration;
+drop table if exists Gambler;
+drop table if exists Car;
+drop table if exists Race;
+drop table if exists GamblerBet;
+drop table if exists CarRegisteration;
+
+create table GamblerRegisteration(gamblerId varchar(10), name varchar(10), password varchar(10), constraint fkGamblerId primary key (gamblerId));
+create table Gambler(gamblerId varchar(10), name varchar(10), constraint fkGamblerId primary key (gamblerId));
+create table RaceBegin(raceId varchar(10), date varchar(30), constraint fkRaceId primary key (raceId));
+create table Car(carId varchar(10), raceId varchar(10), type varchar(10), shape varchar(10), color varchar(10), size varchar(10), constraint fkCarId primary key (carId), constraint fkRaceIdC foreign key (raceId) references RaceBegin(raceId));
+create table GamblerBet(raceId varchar(10), carId varchar(10), gamblerBetId varchar(10), bet integer,  constraint fkRaceIdG foreign key (raceId) references RaceBegin(raceId),  constraint fkCarIdG foreign key (carId) references Car(carId), constraint fkGamblerId foreign key (gamblerBetId) references Gambler(gamblerId)); 
+create table GamblerPrize(gamblerPrizeId varchar(10), raceId varchar(10), prize double, constraint fkGamblerIdP foreign key (gamblerPrizeId) references Gambler(gamblerId), constraint fkRaceIdP foreign key (raceId) references RaceBegin(raceId));
+create table RaceStatistic (raceStatisticId varchar(10), carWinner varchar(10), distance varchar(10), totalBets double, profit double, date varchar(30), constraint fkRaceIdR foreign key (raceStatisticId) references RaceBegin(raceId), constraint fkCarIdR foreign key (carWinner) references Car(carId));
+commit;
